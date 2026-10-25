@@ -1,0 +1,820 @@
+/* ==============================================================================
+   Clinical Dashboard Styles with Purposeful Medical Color Coding
+   - Zero emojis
+   - No hover animations (no scale, no bounce, no float)
+   - Clean, institutional, color-coded clinical hierarchy
+   - Fill slide animation for buttons
+   ============================================================================== */
+
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 3rem;
+}
+
+/* ------------------------------------------------------------------------------
+   Header & Navigation
+   ------------------------------------------------------------------------------ */
+.app-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.header-titles {
+  .brand-badge {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #2563eb;
+    margin-bottom: 0.25rem;
+  }
+
+  .system-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-main);
+    text-transform: uppercase;
+  }
+
+  .system-subtitle {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #94a3b8;
+  }
+
+  &.online {
+    color: #15803d;
+    background-color: #f0fdf4;
+    border-color: #86efac;
+    .status-dot {
+      background-color: #16a34a;
+    }
+  }
+
+  &.offline {
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+    .status-dot {
+      background-color: #dc2626;
+    }
+  }
+}
+
+.nav-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.alert-banner {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  font-size: 0.8125rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+/* ------------------------------------------------------------------------------
+   Presets Ribbon
+   ------------------------------------------------------------------------------ */
+.presets-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid #2563eb;
+  border-radius: 6px;
+  padding: 0.875rem 1.25rem;
+  margin-bottom: 1.5rem;
+
+  .presets-label-block {
+    display: flex;
+    flex-direction: column;
+
+    .presets-tag {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #2563eb;
+      letter-spacing: 0.05em;
+    }
+
+    .presets-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  }
+
+  .preset-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+/* Fill Slide Animation with Specific Color Curtains for Presets */
+.preset-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+
+  &.preset-high {
+    border-color: #fca5a5;
+    color: #b91c1c;
+    &::before {
+      background-color: #b91c1c;
+    }
+  }
+
+  &.preset-mod {
+    border-color: #fde047;
+    color: #b45309;
+    &::before {
+      background-color: #b45309;
+    }
+  }
+
+  &.preset-low {
+    border-color: #86efac;
+    color: #15803d;
+    &::before {
+      background-color: #15803d;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Main Two-Column Grid
+   ------------------------------------------------------------------------------ */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1080px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1.5rem;
+
+  .card-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+
+    .card-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .card-caption {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 0.15rem;
+    }
+
+    &.header-blue {
+      border-left: 3px solid #2563eb;
+      padding-left: 0.75rem;
+    }
+
+    &.header-risk {
+      border-left: 3px solid #ea580c;
+      padding-left: 0.75rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Form Fieldsets with Categorized Accent Colors
+   ------------------------------------------------------------------------------ */
+.form-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.form-fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  background-color: #ffffff;
+
+  legend {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0 0.45rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Blue: Hospitalization */
+  &.fieldset-blue {
+    border-color: rgba(37, 99, 235, 0.3);
+    background-color: #fbfdff;
+    .legend-blue {
+      color: #1d4ed8;
+    }
+  }
+
+  /* Purple: Clinical Intensity */
+  &.fieldset-purple {
+    border-color: rgba(99, 102, 241, 0.3);
+    background-color: #fcfcff;
+    .legend-purple {
+      color: #4f46e5;
+    }
+  }
+
+  /* Teal: Glycemic Control */
+  &.fieldset-teal {
+    border-color: rgba(13, 148, 136, 0.3);
+    background-color: #fafffe;
+    .legend-teal {
+      color: #0f766e;
+    }
+  }
+
+  /* Slate: Demographics */
+  &.fieldset-slate {
+    border-color: rgba(71, 85, 105, 0.25);
+    background-color: #fafbfc;
+    .legend-slate {
+      color: #334155;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 0.65rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-actions {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .recalculate-info {
+    .calc-status {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      transition: color 0.25s ease;
+
+      &.status-fresh {
+        color: #16a34a;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .recalculate-btn {
+    min-width: 240px;
+  }
+}
+
+.risk-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .eval-badge {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: #ea580c;
+    background-color: #fff7ed;
+    border: 1px solid #fdba74;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+
+    &.badge-pulse {
+      background-color: #ea580c;
+      color: #ffffff;
+      border-color: #ea580c;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Dynamic Risk Output & Visual Spectrum Meter
+   ------------------------------------------------------------------------------ */
+.score-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  .score-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .probability-metric {
+    display: flex;
+    flex-direction: column;
+
+    .probability-value {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+    }
+
+    .probability-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.35rem;
+    }
+  }
+
+  .tier-pill {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    border: 1px solid transparent;
+
+    &[data-tier="Low"] {
+      background-color: #ecfdf5;
+      border-color: #86efac;
+      color: #15803d;
+    }
+
+    &[data-tier="Moderate"] {
+      background-color: #fffbeb;
+      border-color: #fde047;
+      color: #b45309;
+    }
+
+    &[data-tier="High"] {
+      background-color: #fff7ed;
+      border-color: #fdba74;
+      color: #c2410c;
+    }
+
+    &[data-tier="Critical"] {
+      background-color: #fef2f2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+  }
+
+  /* Multi-Segment Color Spectrum Meter */
+  .risk-spectrum-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    .spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6875rem;
+      font-weight: 600;
+
+      .low-lbl { color: #16a34a; }
+      .mod-lbl { color: #d97706; }
+      .high-lbl { color: #ea580c; }
+      .crit-lbl { color: #dc2626; }
+    }
+
+    .risk-spectrum-bar {
+      position: relative;
+      display: flex;
+      height: 8px;
+      width: 100%;
+      border-radius: 4px;
+      overflow: visible;
+
+      .segment {
+        height: 100%;
+        &.seg-low {
+          width: 20%;
+          background-color: #10b981;
+          border-radius: 4px 0 0 4px;
+        }
+        &.seg-mod {
+          width: 25%;
+          background-color: #f59e0b;
+        }
+        &.seg-high {
+          width: 25%;
+          background-color: #f97316;
+        }
+        &.seg-crit {
+          width: 30%;
+          background-color: #ef4444;
+          border-radius: 0 4px 4px 0;
+        }
+      }
+
+      .current-indicator-pin {
+        position: absolute;
+        top: -4px;
+        width: 4px;
+        height: 16px;
+        background-color: #0f172a;
+        border: 1px solid #ffffff;
+        border-radius: 2px;
+        transform: translateX(-50%);
+        transition: left 0.25s ease;
+      }
+    }
+  }
+
+  .classification-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 0.65rem;
+    font-size: 0.75rem;
+
+    .class-label {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .class-value {
+      font-weight: 700;
+      font-family: var(--font-sans);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Threshold Simulator
+   ------------------------------------------------------------------------------ */
+.threshold-simulator {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  background-color: #ffffff;
+
+  .threshold-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    label {
+      margin-bottom: 0;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .threshold-flag {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #2563eb;
+    }
+  }
+
+  .threshold-captions {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    color: var(--text-dim);
+    margin-top: 0.35rem;
+
+    .caption-left { color: #2563eb; font-weight: 500; }
+    .caption-right { color: #64748b; }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Contributing Feature Factors
+   ------------------------------------------------------------------------------ */
+.factors-section {
+  .factors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    .factors-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .factors-legend {
+      display: flex;
+      gap: 0.5rem;
+
+      .legend-chip {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        padding: 0.15rem 0.45rem;
+        border-radius: 3px;
+
+        &.chip-risk {
+          color: #dc2626;
+          background-color: #fef2f2;
+        }
+
+        &.chip-safe {
+          color: #16a34a;
+          background-color: #f0fdf4;
+        }
+      }
+    }
+  }
+
+  .factors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .factor-row {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .factor-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+
+      .factor-name {
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .factor-direction {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 600;
+
+        &.dir-increase {
+          color: #dc2626;
+        }
+
+        &.dir-reduce {
+          color: #16a34a;
+        }
+      }
+    }
+
+    .factor-bar-wrapper {
+      width: 100%;
+      height: 6px;
+      background-color: #f1f5f9;
+      border-radius: 3px;
+      overflow: hidden;
+
+      .factor-bar {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.25s ease;
+
+        &.bar-increase {
+          background-color: #ef4444;
+        }
+
+        &.bar-reduce {
+          background-color: #10b981;
+        }
+      }
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Data Tables (Benchmark & Batch)
+   ------------------------------------------------------------------------------ */
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  text-align: left;
+
+  th {
+    background-color: var(--bg-subtle);
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--border-color);
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    white-space: nowrap;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .model-name-cell {
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .reached-metric {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: #2563eb;
+  }
+
+  .highlight-row {
+    background-color: #f8faff;
+  }
+
+  .delta-neg {
+    color: #ea580c;
+  }
+}
+
+.benchmark-analysis {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+
+  .analysis-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .analysis-list {
+    padding-left: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Batch Screening Styles
+   ------------------------------------------------------------------------------ */
+.batch-controls {
+  margin-bottom: 1.25rem;
+}
+
+.batch-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+
+  .summary-box {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .summary-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      line-height: 1;
+      color: var(--text-main);
+    }
+
+    .summary-lbl {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 0.25rem;
+    }
+
+    &.box-crit {
+      border-left: 4px solid #ef4444;
+      .summary-val { color: #dc2626; }
+    }
+    &.box-high {
+      border-left: 4px solid #f97316;
+      .summary-val { color: #ea580c; }
+    }
+    &.box-mod {
+      border-left: 4px solid #f59e0b;
+      .summary-val { color: #d97706; }
+    }
+    &.box-low {
+      border-left: 4px solid #10b981;
+      .summary-val { color: #059669; }
+    }
+  }
+}
+
+.tier-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: 3px;
+
+  &[data-tier="Low"] {
+    background-color: #ecfdf5;
+    color: #15803d;
+  }
+  &[data-tier="Moderate"] {
+    background-color: #fffbeb;
+    color: #b45309;
+  }
+  &[data-tier="High"] {
+    background-color: #fff7ed;
+    color: #c2410c;
+  }
+  &[data-tier="Critical"] {
+    background-color: #fef2f2;
+    color: #b91c1c;
+  }
+}

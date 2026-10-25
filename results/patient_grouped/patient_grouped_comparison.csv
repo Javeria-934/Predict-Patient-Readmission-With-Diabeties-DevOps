@@ -1,0 +1,2 @@
+Split_Type,Model,Train_Encounters,Test_Encounters,Accuracy,AUC_ROC,Positive_Recall,Positive_Precision,Positive_F1,Training_Time_s
+Patient-Grouped Split (Zero Patient Overlap),"XGBoost (Unweighted, Threshold 0.5)",81613,20153,0.8936,0.6777,0.0093,0.5882,0.0183,3.23

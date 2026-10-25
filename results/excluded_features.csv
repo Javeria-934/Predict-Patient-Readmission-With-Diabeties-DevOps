@@ -1,0 +1,6 @@
+Feature,Reason,Category
+encounter_id,Unique encounter identifier. Memorization/leakage risk; contains no clinical information.,Identifier
+patient_nbr,Unique patient identifier. Memorization/leakage risk; non-generalizable across healthcare facilities.,Identifier
+weight,"Missing in 98,569 of 101,766 encounters (96.86% missing). Imputation would fabricate nearly all data.",Extreme Missingness
+examide,"Constant single value ('No') across all 101,766 encounters. Zero variance / zero predictive utility.",Zero Variance
+citoglipton,"Constant single value ('No') across all 101,766 encounters. Zero variance / zero predictive utility.",Zero Variance

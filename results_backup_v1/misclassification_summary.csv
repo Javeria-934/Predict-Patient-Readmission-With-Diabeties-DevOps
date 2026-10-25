@@ -1,0 +1,5 @@
+Model,True_Positives (TP),True_Negatives (TN),False_Positives (FP),False_Negatives (FN),FPR,FNR,Paper_FP_Ref,Paper_FN_Ref
+Logistic Regression,1316,12322,5761,955,0.3186,0.4205,1276,2249
+Random Forest,1337,12155,5928,934,0.3278,0.4113,1224,2280
+XGBoost,1374,11991,6092,897,0.3369,0.395,1172,2244
+Deep Neural Network (DNN),1490,10560,7523,781,0.416,0.3439,1631,1960

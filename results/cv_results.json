@@ -1,0 +1,17 @@
+{
+    "scoring_metric": "roc_auc",
+    "cv_folds": 5,
+    "dnn_cv_folds": 3,
+    "best_cv_scores": {
+        "logistic_regression": 0.6695807586637568,
+        "random_forest": 0.6702365087105642,
+        "xgboost": 0.6776376664957546,
+        "dnn": 0.6328269457326392
+    },
+    "training_times_seconds": {
+        "logistic_regression": 79.29,
+        "random_forest": 117.19,
+        "xgboost": 42.52,
+        "dnn": 173.27
+    }
+}

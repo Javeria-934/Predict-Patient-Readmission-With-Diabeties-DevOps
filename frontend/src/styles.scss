@@ -1,0 +1,181 @@
+/* ==============================================================================
+   Clinical Design System & Global Styles
+   Strict Requirements:
+   - No emojis
+   - No hover animations (no scale, no bounce, no translate)
+   - No vibrant gradients (subtle, serious, medical institutional palette)
+   - Fill slide animation for buttons
+   ============================================================================== */
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Palette: Slate & Medical Institutional Neutrals */
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-subtle: #cbd5e1;
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+
+  --primary-color: #0f172a;
+  --primary-hover: #1e293b;
+  --primary-light: #f1f5f9;
+
+  /* Clinical Risk Indicators (Muted, High-Contrast) */
+  --risk-low-bg: #f0fdf4;
+  --risk-low-border: #86efac;
+  --risk-low-text: #166534;
+
+  --risk-mod-bg: #fefce8;
+  --risk-mod-border: #fde047;
+  --risk-mod-text: #854d0e;
+
+  --risk-high-bg: #fff7ed;
+  --risk-high-border: #fdba74;
+  --risk-high-text: #9a3412;
+
+  --risk-crit-bg: #fef2f2;
+  --risk-crit-border: #fca5a5;
+  --risk-crit-text: #991b1b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------------------------------------------------------------------------
+   Button Styles with Fill Slide Animation (Strict Requirement)
+   ------------------------------------------------------------------------------ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  transition: color 0.25s ease, border-color 0.25s ease;
+
+  /* Slide fill curtain */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+  }
+
+  &:hover::before,
+  &:focus::before {
+    transform: translateX(0);
+  }
+
+  &:hover,
+  &:focus {
+    color: #ffffff;
+    border-color: var(--primary-color);
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &::before {
+      display: none;
+    }
+  }
+
+  &.btn-active {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+  }
+
+  &.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  &.btn-primary {
+    border-color: var(--primary-color);
+  }
+}
+
+/* ------------------------------------------------------------------------------
+   Clean Institutional Form Controls
+   ------------------------------------------------------------------------------ */
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    border-color: var(--primary-color);
+  }
+
+  &:disabled {
+    background-color: var(--bg-subtle);
+    color: var(--text-dim);
+  }
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Threshold slider without bounce */
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}

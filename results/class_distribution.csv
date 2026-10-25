@@ -1,0 +1,6 @@
+Category,Count,Percentage,Role
+NO,54864,53.911915571015854,Original Negative Subcategory
+>30,35545,34.92816854352141,Original Negative Subcategory (>30d readmission)
+<30,11357,11.159915885462727,Original Positive Subcategory (<30d readmission)
+Binary_Class_0 (No / >30),90409,88.84008411453728,Aggregated Negative Class (0)
+Binary_Class_1 (<30),11357,11.159915885462727,Target Positive Class (1)

@@ -1,0 +1,7 @@
+Model,Family,Paper_Accuracy_Target,Reached_Accuracy (Unweighted),Accuracy_Delta,Paper_AUC_Ref,Reached_AUC_ROC,PR_AUC,Positive_Recall,Positive_Precision,False_Negatives (FN)
+Logistic Regression,Paper Model,0.89,0.8886,-0.0014,0.642,0.682,0.2275,0.0172,0.527,
+Random Forest,Paper Model,0.89,0.8884,-0.0016,0.63,0.6836,0.2396,0.0,0.0,
+XGBoost,Paper Model,0.89,0.8889,-0.0011,0.667,0.6884,0.241,0.011,0.6098,
+Deep Neural Network (DNN),Paper Neural Net,0.84,0.8802,0.0402,0.579,0.6519,0.2012,0.0762,0.3372,
+LightGBM (New),Advanced GBDT,0.89,0.8893,-0.0007,0.667,0.6897,0.2478,0.0167,0.6441,2233.0
+CatBoost (New),Advanced GBDT,0.89,0.8886,-0.0014,0.667,0.6857,0.2384,0.0079,0.5625,2253.0

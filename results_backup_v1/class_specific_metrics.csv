@@ -1,0 +1,9 @@
+Model,Class,Class_Name,Support,Precision,Recall,F1_Score
+Logistic Regression,0,Non-Readmitted (>=30d / NO),18083,0.9281,0.6814,0.7858
+Logistic Regression,1,Readmitted <30d,2271,0.186,0.5795,0.2816
+Random Forest,0,Non-Readmitted (>=30d / NO),18083,0.9286,0.6722,0.7799
+Random Forest,1,Readmitted <30d,2271,0.184,0.5887,0.2804
+XGBoost,0,Non-Readmitted (>=30d / NO),18083,0.9304,0.6631,0.7743
+XGBoost,1,Readmitted <30d,2271,0.184,0.605,0.2822
+Deep Neural Network (DNN),0,Non-Readmitted (>=30d / NO),18083,0.9311,0.584,0.7178
+Deep Neural Network (DNN),1,Readmitted <30d,2271,0.1653,0.6561,0.2641

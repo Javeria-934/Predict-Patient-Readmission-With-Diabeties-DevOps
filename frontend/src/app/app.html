@@ -1,0 +1,482 @@
+<div class="app-container">
+  <!-- Top Navigation & Header -->
+  <header class="app-header">
+    <div class="header-main">
+      <div class="header-titles">
+        <div class="brand-badge">CLINICAL DECISION SUPPORT</div>
+        <h1 class="system-title">Diabetes 30-Day Hospital Readmission Risk System</h1>
+        <p class="system-subtitle">Electronic Health Record Predictive Risk Stratification</p>
+      </div>
+      <div class="header-status">
+        <span class="status-indicator" [class.online]="isSystemReady()" [class.offline]="!isSystemReady()">
+          <span class="status-dot"></span>
+          Clinical Risk Engine: {{ isSystemReady() ? 'Operational' : 'Unavailable' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+      <button 
+        type="button" 
+        class="btn fill-slide-btn" 
+        [class.btn-active]="activeTab() === 'assessment'"
+        (click)="activeTab.set('assessment')">
+        Patient Risk Assessment
+      </button>
+      <button 
+        type="button" 
+        class="btn fill-slide-btn" 
+        [class.btn-active]="activeTab() === 'benchmarks'"
+        (click)="activeTab.set('benchmarks')">
+        Clinical Validation &amp; Study Metrics
+      </button>
+      <button 
+        type="button" 
+        class="btn fill-slide-btn" 
+        [class.btn-active]="activeTab() === 'batch'"
+        (click)="activeTab.set('batch')">
+        Cohort Triage Screening
+      </button>
+    </nav>
+  </header>
+
+  <!-- Error Notification Banner -->
+  <div *ngIf="errorMessage()" class="alert-banner">
+    {{ errorMessage() }}
+  </div>
+
+  <!-- TAB 1: PATIENT RISK ASSESSMENT -->
+  <main *ngIf="activeTab() === 'assessment'" class="view-content">
+    <!-- Presets Quick Ribbon -->
+    <section class="presets-ribbon">
+      <div class="presets-label-block">
+        <span class="presets-tag">QUICK ARCHETYPES</span>
+        <span class="presets-hint">Select a validated clinical patient archetype to populate EHR values:</span>
+      </div>
+      <div class="preset-buttons">
+        <button 
+          type="button" 
+          class="btn fill-slide-btn preset-btn preset-high"
+          (click)="applyPreset(presets()[0]?.data || {})">
+          High Risk: Frequent Inpatient
+        </button>
+        <button 
+          type="button" 
+          class="btn fill-slide-btn preset-btn preset-mod"
+          (click)="applyPreset(presets()[1]?.data || {})">
+          Moderate Risk: Cardiac Comorbidity
+        </button>
+        <button 
+          type="button" 
+          class="btn fill-slide-btn preset-btn preset-low"
+          (click)="applyPreset(presets()[2]?.data || {})">
+          Low Risk: Routine Elective Care
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Assessment Two-Column Layout -->
+    <div class="grid-layout">
+      <!-- Left Column: Patient EHR Input Parameters -->
+      <section class="card form-card">
+        <div class="card-header header-blue">
+          <div>
+            <h2 class="card-title">Patient Electronic Health Record Parameters</h2>
+            <span class="card-caption">Adjust clinical parameters below and click Recalculate to evaluate probability</span>
+          </div>
+        </div>
+
+        <div class="form-sections">
+          <!-- Section 1: Hospitalization & Utilization (Medical Blue Accent) -->
+          <fieldset class="form-fieldset fieldset-blue">
+            <legend class="legend-blue">Hospitalization &amp; Prior Utilization</legend>
+            <div class="form-row">
+              <div class="form-col">
+                <label for="timeHospital">Length of Stay (Days: 1-14)</label>
+                <input id="timeHospital" type="number" min="1" max="14" 
+                  [ngModel]="patient().time_in_hospital" 
+                  (ngModelChange)="updateField('time_in_hospital', $event)">
+              </div>
+              <div class="form-col">
+                <label for="numInpatient">Prior Inpatient Stays (Past Year)</label>
+                <input id="numInpatient" type="number" min="0" max="21" 
+                  [ngModel]="patient().number_inpatient" 
+                  (ngModelChange)="updateField('number_inpatient', $event)">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col">
+                <label for="numEmergency">Emergency Room Visits</label>
+                <input id="numEmergency" type="number" min="0" max="76" 
+                  [ngModel]="patient().number_emergency" 
+                  (ngModelChange)="updateField('number_emergency', $event)">
+              </div>
+              <div class="form-col">
+                <label for="numOutpatient">Outpatient Encounters</label>
+                <input id="numOutpatient" type="number" min="0" max="42" 
+                  [ngModel]="patient().number_outpatient" 
+                  (ngModelChange)="updateField('number_outpatient', $event)">
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Section 2: Clinical Intensity (Violet / Indigo Accent) -->
+          <fieldset class="form-fieldset fieldset-purple">
+            <legend class="legend-purple">Clinical Intensity &amp; Diagnostics</legend>
+            <div class="form-row">
+              <div class="form-col">
+                <label for="numLab">Laboratory Procedures Count</label>
+                <input id="numLab" type="number" min="1" max="132" 
+                  [ngModel]="patient().num_lab_procedures" 
+                  (ngModelChange)="updateField('num_lab_procedures', $event)">
+              </div>
+              <div class="form-col">
+                <label for="numMeds">Prescribed Medications Count</label>
+                <input id="numMeds" type="number" min="1" max="81" 
+                  [ngModel]="patient().num_medications" 
+                  (ngModelChange)="updateField('num_medications', $event)">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col">
+                <label for="numDiagnoses">Recorded Diagnoses Count</label>
+                <input id="numDiagnoses" type="number" min="1" max="16" 
+                  [ngModel]="patient().number_diagnoses" 
+                  (ngModelChange)="updateField('number_diagnoses', $event)">
+              </div>
+              <div class="form-col">
+                <label for="primaryDiag">Primary Diagnosis (ICD-9 Code)</label>
+                <input id="primaryDiag" type="text" 
+                  [ngModel]="patient().diag_1" 
+                  (ngModelChange)="updateField('diag_1', $event)">
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Section 3: Glycemic Control & Medication (Teal / Emerald Accent) -->
+          <fieldset class="form-fieldset fieldset-teal">
+            <legend class="legend-teal">Glycemic Control &amp; Regimen Adjustment</legend>
+            <div class="form-row">
+              <div class="form-col">
+                <label for="a1cResult">HbA1c Test Result</label>
+                <select id="a1cResult" 
+                  [ngModel]="patient().A1Cresult" 
+                  (ngModelChange)="updateField('A1Cresult', $event)">
+                  <option *ngFor="let opt of a1cOptions" [value]="opt">{{ opt }}</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="insulinState">Insulin Modification</label>
+                <select id="insulinState" 
+                  [ngModel]="patient().insulin" 
+                  (ngModelChange)="updateField('insulin', $event)">
+                  <option *ngFor="let opt of insulinOptions" [value]="opt">{{ opt }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col">
+                <label for="regimenChange">Medication Changed</label>
+                <select id="regimenChange" 
+                  [ngModel]="patient().change" 
+                  (ngModelChange)="updateField('change', $event)">
+                  <option value="No">No (Maintained)</option>
+                  <option value="Ch">Ch (Dosage/Drug Adjusted)</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="diabetesMed">Diabetes Medication Prescribed</label>
+                <select id="diabetesMed" 
+                  [ngModel]="patient().diabetesMed" 
+                  (ngModelChange)="updateField('diabetesMed', $event)">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Section 4: Patient Demographics (Slate Accent - Race Removed) -->
+          <fieldset class="form-fieldset fieldset-slate">
+            <legend class="legend-slate">Patient Demographics</legend>
+            <div class="form-row">
+              <div class="form-col">
+                <label for="ageGroup">Age Bracket</label>
+                <select id="ageGroup" 
+                  [ngModel]="patient().age" 
+                  (ngModelChange)="updateField('age', $event)">
+                  <option *ngFor="let age of ageCategories" [value]="age">{{ age }}</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="gender">Gender</label>
+                <select id="gender" 
+                  [ngModel]="patient().gender" 
+                  (ngModelChange)="updateField('gender', $event)">
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Form Actions & Functional Recalculate Button -->
+        <div class="form-actions">
+          <div class="recalculate-info">
+            <span class="calc-status" [class.status-fresh]="isRecalculating()">
+              Last Evaluated: {{ lastCalculatedAt() }}
+            </span>
+          </div>
+          <button 
+            type="button" 
+            class="btn fill-slide-btn btn-primary recalculate-btn" 
+            [disabled]="isPredicting()"
+            (click)="predict()">
+            <span *ngIf="isPredicting()">Calculating Probability...</span>
+            <span *ngIf="!isPredicting() && !isRecalculating()">Recalculate Clinical Probability</span>
+            <span *ngIf="isRecalculating() && !isPredicting()">Recalculation Complete</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Column: Interactive Risk Output & Factors -->
+      <section class="card results-card" *ngIf="prediction() as p">
+        <div class="card-header header-risk">
+          <div class="risk-header-flex">
+            <div>
+              <h2 class="card-title">Clinical Risk Stratification</h2>
+              <span class="card-caption">Calculated 30-day post-discharge readmission probability</span>
+            </div>
+            <span class="eval-badge" [class.badge-pulse]="isRecalculating()">
+              Evaluated: {{ lastCalculatedAt() }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Dynamic Color-Coded Risk Display -->
+        <div class="score-display" [style.border-color]="getRiskColor(p.risk_tier)" [style.background-color]="getRiskBg(p.risk_tier)">
+          <div class="score-top">
+            <div class="probability-metric">
+              <span class="probability-value" [style.color]="getRiskColor(p.risk_tier)">
+                {{ p.risk_percentage }}%
+              </span>
+              <span class="probability-label">30-Day Readmission Risk</span>
+            </div>
+
+            <div class="tier-pill" [attr.data-tier]="p.risk_tier">
+              {{ p.risk_tier.toUpperCase() }} RISK TIER
+            </div>
+          </div>
+
+          <!-- Multi-Segment Visual Risk Spectrum Meter -->
+          <div class="risk-spectrum-container">
+            <div class="spectrum-labels">
+              <span class="spec-lbl low-lbl">Low (0-20%)</span>
+              <span class="spec-lbl mod-lbl">Moderate (20-45%)</span>
+              <span class="spec-lbl high-lbl">High (45-70%)</span>
+              <span class="spec-lbl crit-lbl">Critical (70%+)</span>
+            </div>
+            <div class="risk-spectrum-bar">
+              <div class="segment seg-low"></div>
+              <div class="segment seg-mod"></div>
+              <div class="segment seg-high"></div>
+              <div class="segment seg-crit"></div>
+              <div class="current-indicator-pin" [style.left.%]="p.risk_percentage"></div>
+            </div>
+          </div>
+
+          <div class="classification-strip">
+            <span class="class-label">Clinical Decision Status:</span>
+            <span class="class-value" [style.color]="getRiskColor(p.risk_tier)">
+              {{ p.prediction === 1 ? 'High Likelihood of Readmission (<30 Days)' : 'Low Likelihood of Early Readmission (>30 Days / No)' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Decision Cutoff Threshold Simulator -->
+        <div class="threshold-simulator">
+          <div class="threshold-header">
+            <label for="threshSlider">Clinical Sensitivity Cutoff: {{ threshold().toFixed(2) }}</label>
+            <span class="threshold-flag">
+              Flagged: {{ p.prediction === 1 ? 'POSITIVE READMISSION' : 'NEGATIVE DISCHARGE' }}
+            </span>
+          </div>
+          <input 
+            id="threshSlider" 
+            type="range" 
+            min="0.05" 
+            max="0.95" 
+            step="0.05" 
+            [value]="threshold()" 
+            (input)="onThresholdSlider($event)">
+          <div class="threshold-captions">
+            <span class="caption-left">Higher Sensitivity (Catches More Readmissions)</span>
+            <span class="caption-right">Higher Specificity (Fewer False Alerts)</span>
+          </div>
+        </div>
+
+        <!-- Color-Coded Feature Impact Factors -->
+        <div class="factors-section">
+          <div class="factors-header">
+            <h3 class="factors-title">Primary Clinical Drivers</h3>
+            <span class="factors-legend">
+              <span class="legend-chip chip-risk">Red: Drives Risk Up</span>
+              <span class="legend-chip chip-safe">Green: Protective / Reduces Risk</span>
+            </span>
+          </div>
+
+          <div class="factors-list">
+            <div *ngFor="let factor of p.top_factors" class="factor-row">
+              <div class="factor-info">
+                <span class="factor-name">{{ factor.label }}</span>
+                <span class="factor-direction" [class.dir-increase]="factor.direction === 'increases_risk'" [class.dir-reduce]="factor.direction === 'reduces_risk'">
+                  {{ factor.direction === 'increases_risk' ? 'Increases Risk' : 'Protective Factor' }}
+                </span>
+              </div>
+              <div class="factor-bar-wrapper">
+                <div class="factor-bar" 
+                  [class.bar-increase]="factor.direction === 'increases_risk'" 
+                  [class.bar-reduce]="factor.direction === 'reduces_risk'"
+                  [style.width.%]="factor.impact > 100 ? 100 : (factor.impact < -100 ? 100 : factor.impact)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- TAB 2: AUDITED BENCHMARK TABLE -->
+  <main *ngIf="activeTab() === 'benchmarks'" class="view-content">
+    <section class="card benchmark-card">
+      <div class="card-header">
+        <h2 class="card-title">Audited Performance Validation vs. Research Targets</h2>
+        <span class="card-caption">Evaluation on held-out EHR cohort (N = 20,354 patient encounters; 88.84% negative class)</span>
+      </div>
+
+      <div class="table-container">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Methodological Pipeline</th>
+              <th>Evaluation Family</th>
+              <th>Published Accuracy Target</th>
+              <th>Reached Accuracy</th>
+              <th>Accuracy Delta</th>
+              <th>Published AUC Target</th>
+              <th>Reached AUC-ROC</th>
+              <th>PR-AUC</th>
+              <th>Sensitivity (Recall)</th>
+              <th>Precision (PPV)</th>
+              <th>Missed Readmissions (FN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of benchmarks()" [class.highlight-row]="row.Model && row.Model.includes('Primary')">
+              <td class="model-name-cell">{{ row.Model }}</td>
+              <td>{{ row.Family }}</td>
+              <td>{{ row.Paper_Accuracy_Target }}</td>
+              <td class="reached-metric">{{ row['Reached_Accuracy (Unweighted)'] }}</td>
+              <td [class.delta-neg]="row.Accuracy_Delta < 0">{{ row.Accuracy_Delta }}</td>
+              <td>{{ row.Paper_AUC_Ref }}</td>
+              <td class="reached-metric">{{ row.Reached_AUC_ROC }}</td>
+              <td>{{ row.PR_AUC }}</td>
+              <td>{{ row.Positive_Recall }}</td>
+              <td>{{ row.Positive_Precision }}</td>
+              <td>{{ row['False_Negatives (FN)'] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="benchmark-analysis">
+        <h3 class="analysis-title">Clinical Accuracy Trade-Off Findings</h3>
+        <ul class="analysis-list">
+          <li><strong>Majority-Class Imbalance:</strong> In the test cohort, 88.84% of patients are not readmitted within 30 days. High nominal accuracy (~89%) can occur when an algorithm collapses to predicting negative for almost all patients, missing true readmissions.</li>
+          <li><strong>Optimized Clinical Sensitivity:</strong> When tuned for clinical intervention, the pipeline identifies 1,358 true readmissions (59.8% sensitivity), dramatically outperforming uncalibrated baseline thresholds that only identified 25 to 39 readmissions.</li>
+          <li><strong>Peak Discriminative Power:</strong> The primary gradient booster achieved an AUC-ROC of 0.6897, exceeding the published study benchmark of 0.6670.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- TAB 3: COHORT BATCH SCREENING -->
+  <main *ngIf="activeTab() === 'batch'" class="view-content">
+    <section class="card batch-card">
+      <div class="card-header">
+        <h2 class="card-title">Electronic Health Record Cohort Triage</h2>
+        <span class="card-caption">Concurrent risk assessment across multi-patient encounters</span>
+      </div>
+
+      <div class="batch-controls">
+        <button type="button" class="btn fill-slide-btn btn-primary" (click)="loadSampleBatch()">
+          Screen Concurrent Patient Cohort
+        </button>
+      </div>
+
+      <div *ngIf="batchResults() as batch" class="batch-results-wrapper">
+        <div class="batch-summary-strip">
+          <div class="summary-box">
+            <span class="summary-val">{{ batch.total_screened }}</span>
+            <span class="summary-lbl">Patients Evaluated</span>
+          </div>
+          <div class="summary-box box-crit">
+            <span class="summary-val">{{ batch.tier_summary.Critical || 0 }}</span>
+            <span class="summary-lbl">Critical Risk</span>
+          </div>
+          <div class="summary-box box-high">
+            <span class="summary-val">{{ batch.tier_summary.High || 0 }}</span>
+            <span class="summary-lbl">High Risk</span>
+          </div>
+          <div class="summary-box box-mod">
+            <span class="summary-val">{{ batch.tier_summary.Moderate || 0 }}</span>
+            <span class="summary-lbl">Moderate Risk</span>
+          </div>
+          <div class="summary-box box-low">
+            <span class="summary-val">{{ batch.tier_summary.Low || 0 }}</span>
+            <span class="summary-lbl">Low Risk</span>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="batch-table">
+            <thead>
+              <tr>
+                <th>Encounter ID</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Days in Hospital</th>
+                <th>Prior Admissions</th>
+                <th>Calculated Probability</th>
+                <th>Triage Flag</th>
+                <th>Risk Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of batch.patients">
+                <td>ENCOUNTER-{{ p.patient_index }}</td>
+                <td>{{ p.age }}</td>
+                <td>{{ p.gender }}</td>
+                <td>{{ p.time_in_hospital }} days</td>
+                <td>{{ p.inpatient_visits }}</td>
+                <td class="reached-metric">{{ (p.probability * 100).toFixed(1) }}%</td>
+                <td>{{ p.prediction === 1 ? 'High Priority' : 'Routine' }}</td>
+                <td>
+                  <span class="tier-badge" [attr.data-tier]="p.risk_tier">
+                    {{ p.risk_tier }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

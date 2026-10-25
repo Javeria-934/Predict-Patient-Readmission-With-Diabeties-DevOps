@@ -1,0 +1,5 @@
+Model,Mode,Accuracy,AUC_ROC,PR_AUC,Positive_Recall (Sensitivity),Positive_Precision (PPV),Positive_F1,Specificity (TNR),TP,TN,FP,FN,5Fold_CV_AUC,Training_Time_s,Inference_Time_s
+LightGBM,"Unweighted (Paper-Matching, Thresh 0.5)",0.8893,0.6897,0.2478,0.0167,0.6441,0.0326,0.9988,38,18062,21,2233,0.6769,10.97,0.2082
+LightGBM,Cost-Sensitive Weighted,0.6655,0.6882,0.2442,0.598,0.1872,0.2852,0.674,1358,12188,5895,913,,2.02,0.0
+CatBoost,"Unweighted (Paper-Matching, Thresh 0.5)",0.8886,0.6857,0.2384,0.0079,0.5625,0.0156,0.9992,18,18069,14,2253,0.6751,43.61,0.2137
+CatBoost,Cost-Sensitive Weighted,0.6603,0.6839,0.234,0.5971,0.1843,0.2817,0.6682,1356,12083,6000,915,,7.99,0.0
