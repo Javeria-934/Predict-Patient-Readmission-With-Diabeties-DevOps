@@ -375,9 +375,14 @@ def batch_predict():
 
 # Serve Angular static bundle in production
 @app.route("/", defaults={"path": ""})
+@app.route("/Predict-Patient-Readmission-With-Diabeties-DevOps/", defaults={"path": ""})
+@app.route("/Predict-Patient-Readmission-With-Diabeties-DevOps/<path:path>")
 @app.route("/<path:path>")
 def serve_angular(path):
     if FRONTEND_DIST.exists():
+        # Handle subpath prefix if present
+        if path.startswith("Predict-Patient-Readmission-With-Diabeties-DevOps/"):
+            path = path.replace("Predict-Patient-Readmission-With-Diabeties-DevOps/", "", 1)
         target = FRONTEND_DIST / path
         if path != "" and target.exists():
             return send_from_directory(str(FRONTEND_DIST), path)
