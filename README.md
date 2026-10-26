@@ -15,11 +15,17 @@ This repository contains a full, academically rigorous, and reproducible impleme
 
 The clinical objective is to identify adult diabetic patients at high risk of acute, unplanned 30-day hospital readmission using structured electronic health records from the **UCI Diabetes 130-US Hospitals Dataset** (101,766 inpatient encounters across 130 US hospitals, 1999–2008).
 
-Four machine learning architectures are systematically trained, cross-validated, and benchmarked:
+Four core machine learning architectures are systematically trained, cross-validated, and benchmarked:
 1. **Logistic Regression** (Interpretable baseline, $L_2$ regularization, balanced class weights)
 2. **Random Forest** (Tree ensemble bagging, constrained depth, balanced class weights)
 3. **XGBoost** (Gradient-boosted decision trees, second-order Taylor optimization, training-derived `scale_pos_weight`)
 4. **Deep Neural Network (DNN)** (Multi-layer PyTorch feed-forward architecture: 128 $\to$ 64 $\to$ 32 $\to$ 1, Batch Normalization, ReLU, Dropout, Adam optimizer, positive class loss weighting)
+
+Additionally, two **novel advanced gradient boosters** were introduced to establish state-of-the-art performance:
+5. **LightGBM** (Histogram-based boosting with Exclusive Feature Bundling; achieved new SOTA AUC-ROC of **0.6897**)
+6. **CatBoost** (Ordered boosting with symmetric oblivious trees to counteract target leakage)
+
+📖 **Full Research & Novelty Paper:** See [RESEARCH_PAPER.md](file:///c:/Users/javer/OneDrive/Desktop/PatientReadmissionDataset/RESEARCH_PAPER.md) (or [Novelty_Paper.md](file:///c:/Users/javer/OneDrive/Desktop/PatientReadmissionDataset/Novelty_Paper.md)) for the complete academic write-up, methodology audit, accuracy paradox analysis, and multi-model benchmark tables.
 
 ---
 
@@ -27,8 +33,12 @@ Four machine learning architectures are systematically trained, cross-validated,
 
 ```
 PatientReadmissionDataset/
+├── RESEARCH_PAPER.md                # Comprehensive academic paper, audit & novelty benchmark
+├── Novelty_Paper.md                 # Duplicate academic novelty paper
+├── results.md                       # Systematic discrepancy and audit report
 ├── Data_Preprocessing.md            # Detailed methodology, decisions, and leakage audits
 ├── Training_Models/                 # Deep-dive documentation for each individual model
+│   ├── LightGBM_and_CatBoost.md
 │   ├── LogisticRegression.md
 │   ├── RandomForest.md
 │   ├── XGBoost.md
